@@ -93,10 +93,10 @@ public class Server extends Thread {
 		switch (identify) {
 			case 0x1 : {
 				
-				String sparator = "&&%%@@!!";
+				String separator = "&&%%@@!!";
 				String escapeCharacter = "!!&%@&#@";
 				Message m = new Message();
-				m.autoSeparator = sparator;
+				m.autoSeparator = separator;
 				m.autoEscapeCharacter = escapeCharacter;
 				
 				String [] strs = m.autoAnalysis(mess);
@@ -119,9 +119,9 @@ public class Server extends Thread {
 						break;
 					}
 					str = yes;
-					frame.dls.addElement(acc);
+					frame.add(acc);
 					database.chooseTable("friendlist");
-					database.modify("account", acc, "friendsocket", userIP);
+					database.modify("friend_account", acc, "friendsocket", userIP);
 				}
 				break;
 				
@@ -155,7 +155,37 @@ public class Server extends Thread {
 				
 				break;
 			} case 0x3 : {
-				System.out.println(mess);
+				String separator = "@@##";
+				String escapeCharacter = "@##@#@@#";
+				
+				Message m = new Message();
+				m.autoSeparator = separator;
+				m.autoEscapeCharacter = escapeCharacter;
+				
+				String [] strs = m.autoAnalysis(mess);
+				String new_acc = strs[0];
+				String pwd = strs[1];
+				String socket = strs[2];
+				
+				String yes = "#00001";
+				String no = "#00000";
+				
+				database.chooseTable("pwd_table");
+				ResultSet rs = database.find("account", new_acc);
+				try {
+					if(rs.next()) {
+						str = no;
+					} else {
+						str = yes;
+						
+						LinkedList<String> list = new LinkedList<>();
+						list.add(new_acc);
+						list.add(pwd);
+						database.insert(list);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 				
 				break;
 			}
@@ -255,14 +285,13 @@ class ChildThread extends Thread {
 			case 0x1 : {
 			} case 0x2 : {
 			} case 0x3 : {  //1、登录 2、获得个人信息 3、注册
-				System.out.println("mess");
 				String new_mess = server.operate(identify, mess);
-				new_mess = Message.generate(identify, source, destination, new_mess);
 				if(new_mess == null) {
 					System.out.println("不发送");
 					linkClose();
 					break;
 				}
+				new_mess = Message.generate(identify, source, destination, new_mess);
 				try {
 					sent(new_mess);
 					linkClose(); 
