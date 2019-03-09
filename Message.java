@@ -178,6 +178,7 @@ public class Message {
 	 * 动态接收到的字符串分割
 	 */
 	public String [] autoAnalysis(String message) {
+		System.out.println(autoSeparator);
 		String [] temp = message.split(autoSeparator);
 		LinkedList<String> tempList = new LinkedList<String>();
 		

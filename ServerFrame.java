@@ -111,6 +111,16 @@ public class ServerFrame {
 		
 	}
 	
+	
+	/*
+	 * 增加用户
+	 */
+	public void add(String acc) {
+		users.add(acc);
+		dls.addElement(acc);
+	}
+	
+	
 	/*
 	 * 查询该用户是否已上线
 	 */

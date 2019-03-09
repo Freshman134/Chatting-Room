@@ -94,7 +94,7 @@ public class MySQL {
 			presql.setString(1, value);
 			rs = presql.executeQuery();
 		} catch (SQLException e) {
-			return null;
+			e.printStackTrace();
 		}
 		return rs;
 	}
