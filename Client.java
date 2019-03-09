@@ -175,9 +175,9 @@ public class Client extends Thread {
 				String no = "#00000";
 				
 				if(message.equals(yes)) {
-					System.out.println("yes");
+					JOptionPane.showMessageDialog(null, "注册成功！请退出注册界面。", "提示", JOptionPane.INFORMATION_MESSAGE);
 				} else {
-					System.out.println("no");
+					JOptionPane.showMessageDialog(null, "注册失败！", "警告", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				break;
